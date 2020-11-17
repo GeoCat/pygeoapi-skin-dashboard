@@ -30,65 +30,85 @@
     <section id="item">
       <div class="row">
         <div class="col-sm">
-          <h2>Item {{ data['id'] }}</h2>
+          <h1>{% for l in data['links'] if l.rel == 'collection' %} {{ l['title'] }} {% endfor %}
+            {{ data['id'] }}</h1>
         </div>
-      </div>
+      </div>       
+  
       <div class="row">
-        <div class="col-md-6 col-sm-12">
-          <div class="row">
-            <div class="col-sm-12">
+        <div class="col-sm-12 col-md-6">
+          <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">
+                Map
+              </h6>
+            </div>
+            <!-- Card Body -->
+            <div>
               <div id="items-map"></div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-12">
-              {% if data['prev'] or data['next'] %}
-              <div class="row">
-                <div class="col-sm-12">
-                  {% for link in data['links'] %}
-                  {% if link['rel'] == 'prev' %}
-                  <a role="button" href="./{{ data['prev'] }}">Previous</a>
-                  {% elif link['rel'] == 'next' %}
-                  <a role="button" href="./{{ data['next'] }}">Next</a>
-                  {% endif %}
-                  {% endfor %}
+
+          {% if data['prev'] or data['next'] %}
+            <div class="card border-left-info shadow py-2 mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div id="limit" class="col-sm-12">
+                    {% for link in data['links'] %}
+                    {% if link['rel'] == 'prev' %}
+                    <a class="btn btn-info" role="button" href="./{{ data['prev'] }}">Previous</a>
+                    {% elif link['rel'] == 'next' %}
+                    <a class="btn btn-info" role="button" href="./{{ data['next'] }}">Next</a>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
               </div>
-              {% endif %}
             </div>
-          </div>
+          {% endif %}
+           
         </div>
         <div class="col-md-6 col-sm-12">
-            <table class="table table-striped">
-              <thead>
-              <tr>
-                <th>Property</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>id</td>
-                <td>{{ data.id }}</td>
-              </tr>
-              {% for k, v in data['properties'].items() %}
-              <tr>
-                <td>{{ k }}</td>
-                {% if k == 'links' %}
-                <td>
-                    <ul>
-                        {% for l in v %}
-                        <li><a href="{{ l['href'] }}">{{ l['title'] }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                {% else %}
-                  <td>{{ render_item_value(v, 80) }}</td>
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-            </table>
+          <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                  Item
+                </h6>
+            </div>
+            <!-- Card Body -->
+            <div>
+              <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>id</td>
+                    <td>{{ data.id }}</td>
+                  </tr>
+                  {% for k, v in data['properties'].items() %}
+                  <tr>
+                    <td>{{ k }}</td>
+                    {% if k == 'links' %}
+                    <td>
+                        <ul>
+                            {% for l in v %}
+                            <li><a href="{{ l['href'] }}">{{ l['title'] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    {% else %}
+                      <td>{{ render_item_value(v, 80) }}</td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+              </div>
+            </div>
         </div>
       </div>
     </section>

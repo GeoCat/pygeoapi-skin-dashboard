@@ -16,52 +16,59 @@
 {% endblock %}
 
 {% block body %}
-  <section id="items"></section>
-  <section id="collection">
-    <h1>{% for l in data['links'] if l.rel == 'collection' %} {{ l['title'] }} {% endfor %}</h1>
-    <p>Items in this collection.</p>
-  </section>
   <section id="items">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>
+          {% for l in data['links'] if l.rel == 'collection' %} {{ l['title'] }} {% endfor %}
+        </h1> 
+      </div>
+    </div>         
+
     {% if data['features'] %}
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <div class="row">
-          <div class="col-sm-12">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">
+              Map
+            </h6>
+          </div>
+          <!-- Card Body -->
+          <div>
             <div id="items-map"></div>
           </div>
-          <div class="col-sm-12">
+        </div>
+ 
+        <div class="card border-left-info shadow py-2 mb-3">
+          <div class="card-body">
             <div class="row">
-                <div class="col-sm-12">
-                  Warning: Higher limits not recommended!
-                </div>
+              <div id="limit" class="col-sm-12">
+                Limit:
+                <select id="limits">
+                  <option value="10">10 (default)</option>
+                  <option value="100">100</option>
+                  <option value="1000">1,000</option>
+                  <option value="2000">2,000</option>
+                </select>
+                <script>
+                  var select = document.getElementById('limits');
+                  let params = (new URL(document.location)).searchParams;
+                  select.value = params.get('limit') || 10;
+                  select.addEventListener('change', ev => {
+                    var limit = ev.target.value;
+                    document.location.search = `limit=${limit}`;
+                  });
+                </script>
+              </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                  Limit:
-                  <select id="limits">
-                    <option value="10">10 (default)</option>
-                    <option value="100">100</option>
-                    <option value="1000">1,000</option>
-                    <option value="2000">2,000</option>
-                  </select>
-                  <script>
-                    var select = document.getElementById('limits');
-                    let params = (new URL(document.location)).searchParams;
-                    select.value = params.get('limit') || 10;
-                    select.addEventListener('change', ev => {
-                      var limit = ev.target.value;
-                      document.location.search = `limit=${limit}`;
-                    });
-                  </script>
-                </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
+            <div class="row mt-3">
+              <div id="pagination" class="col-sm-12">
                 {% for link in data['links'] %}
                 {% if link['rel'] == 'prev' and data['startindex'] > 0 %}
-                <a role="button" href="{{ link['href'] }}">Prev</a>
+                <a class="btn btn-info" href="{{ link['href'] }}">Prev</a>
                 {% elif link['rel'] == 'next' and data['features'] %}
-                <a role="button" href="{{ link['href'] }}">Next</a>
+                <a class="btn btn-info" href="{{ link['href'] }}">Next</a>
                 {% endif %}
                 {% endfor %}
               </div>
@@ -69,31 +76,42 @@
           </div>
         </div>
       </div>
+
       <div class="col-sm-12 col-md-6">
-          <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>id</th>
-                {% for k, v in data['features'][0]['properties'].items() %}
-                {% if loop.index < 5 %}
-                <td>{{ k }}</td>
-                {% endif %}
-                {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for ft in data['features'] %}
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">
+                Items
+              </h6>
+          </div>
+          <!-- Card Body -->
+          <div>
+            <table class="table table-striped">
+              <thead>
               <tr>
-                <td data-label="id"><a href="{{ data['items_path']}}/{{ ft.id }}">{{ ft.id }}</a></td>
-                  {% for k, v in ft['properties'].items() %}
+                  <th>id</th>
+                  {% for k, v in data['features'][0]['properties'].items() %}
                   {% if loop.index < 5 %}
-                  <td data-label="{{ k }}">{{ v | urlize(20) }}</td>
+                  <td>{{ k }}</td>
                   {% endif %}
                   {% endfor %}
               </tr>
-            {% endfor %}
-          </tbody>
-          </table>
+            </thead>
+            <tbody>
+              {% for ft in data['features'] %}
+                <tr>
+                  <td data-label="id"><a href="{{ data['items_path']}}/{{ ft.id }}">{{ ft.id }}</a></td>
+                    {% for k, v in ft['properties'].items() %}
+                    {% if loop.index < 5 %}
+                    <td data-label="{{ k }}">{{ v | urlize(20) }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
     {% else %}
