@@ -16,7 +16,7 @@
       <p itemprop="description">{{ data['description'] }}</p>
       <p itemprop="keywords">
         {% for kw in data['keywords'] %}
-          <mark class="tag">{{ kw }}</mark>
+          <span class="badge badge-info">{{ kw }}</span>
         {% endfor %}
       </p>
       {% if data['itemType'] == 'Feature' %}

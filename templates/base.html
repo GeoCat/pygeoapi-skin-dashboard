@@ -11,10 +11,7 @@
   <link rel="shortcut icon" href="{{ config['server']['url'] }}/static/img/favicon.ico" type="image/x-icon">
 
     <!-- Custom fonts for this template-->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
     <link rel="stylesheet" href="{{ config['server']['url'] }}/static/css/default.css">
     <!-- Custom styles for this template-->
     <link href="{{ config['server']['url'] }}/static/css/sb.css" rel="stylesheet">
@@ -209,6 +206,7 @@
                                 {{ config['metadata']['license']['name'] or config['metadata']['license']['url'] }}</a>
                               </p>
                             {% endif %}
+                            <p>Powered by <a title="pygeoapi" href="https://pygeoapi.io">pygeoapi</a> {{ version }}.</p>
                         </div>    
                       </div>
                     </div>
@@ -225,7 +223,8 @@
   
 
 
-   
+  {% block extrafoot %}
+  {% endblock %}
     <script>
       // Requests and embeds JSON-LD representation of current page
       var xhr = new XMLHttpRequest();
