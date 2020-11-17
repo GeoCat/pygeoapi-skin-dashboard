@@ -1,6 +1,8 @@
 # pygeoapi-skin-dashboard
 A skin for [pygeoapi](http://pygeoapi.io), based on a typical dashboard interface
 
+![Snapshot of skin](snap.png)
+
 Skin is inspired by [StartBootstrap Dashboard](https://startbootstrap.com/theme/sb-admin-2).
 
 # Installation
