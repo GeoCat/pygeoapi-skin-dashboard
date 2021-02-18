@@ -40,21 +40,21 @@
           </div>
         </div>
         <div class="col-md-6">
-        {% if data['itemType'] == 'Feature' %}
+        {% if data['itemType'] == 'feature' or data['itemType'] == 'record'   %}
+        <h3>Browse</h3>
+        <ul>
+          <li>
+            <div>
+              <a title="Browse Items" href="{{ config['server']['url'] }}/collections/{{ data['id'] }}/items">
+                Browse through the items of "{{ data['title'] }}"</a></div>
+          </li>
+        </ul>
         <h3>Queryables</h3>
         <ul>
           <li>
             <div>
               <a title="Display Queryables" href="{{ config['server']['url'] }}/collections/{{ data['id'] }}/queryables">
                 Display Queryables of "{{ data['title'] }}"</a></div>
-          </li>
-        </ul>
-        <h3>View</h3>
-        <ul>
-          <li>
-            <div>
-              <a title="Browse Items" href="{{ config['server']['url'] }}/collections/{{ data['id'] }}/items">
-                Browse through the items of "{{ data['title'] }}"</a></div>
           </li>
         </ul>
         {% for provider in config['resources'][data['id']]['providers'] %}
